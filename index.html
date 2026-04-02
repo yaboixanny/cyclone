@@ -190,10 +190,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                     <p style="color: var(--text-light); margin-bottom: 25px; font-size: 0.95rem;">Fill out the brief form below and we'll reach out instantly with a transparent quote.</p>
                     <form name="main-quote" method="POST" data-netlify="true" style="display: flex; flex-direction: column; gap: 15px;">
                         <input type="hidden" name="form-name" value="main-quote">
-                        <input type="text" placeholder="Your Name" style="padding: 15px 18px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 1rem; width: 100%; font-family: inherit; background: #fff; outline: none; transition: border 0.2s;">
-                        <input type="tel" placeholder="Phone Number" style="padding: 15px 18px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 1rem; width: 100%; font-family: inherit; background: #fff; outline: none; transition: border 0.2s;">
-                        <input type="email" placeholder="Email Address" style="padding: 15px 18px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 1rem; width: 100%; font-family: inherit; background: #fff; outline: none; transition: border 0.2s;">
-                        <textarea placeholder="Property Details or Services Needed" rows="3" style="padding: 15px 18px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 1rem; width: 100%; resize: none; font-family: inherit; background: #fff; outline: none; transition: border 0.2s;"></textarea>
+                        <input type="hidden" name="subject" value="New Power Washing Quote - Cyclone Eco Power Wash">
+                        <input type="text" name="name" placeholder="Your Name" style="padding: 15px 18px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 1rem; width: 100%; font-family: inherit; background: #fff; outline: none; transition: border 0.2s;">
+                        <input type="tel" name="phone" placeholder="Phone Number" style="padding: 15px 18px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 1rem; width: 100%; font-family: inherit; background: #fff; outline: none; transition: border 0.2s;">
+                        <input type="email" name="email" placeholder="Email Address" style="padding: 15px 18px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 1rem; width: 100%; font-family: inherit; background: #fff; outline: none; transition: border 0.2s;">
+                        <textarea name="message" placeholder="Property Details or Services Needed" rows="3" style="padding: 15px 18px; border-radius: 12px; border: 1px solid #cbd5e1; font-size: 1rem; width: 100%; resize: none; font-family: inherit; background: #fff; outline: none; transition: border 0.2s;"></textarea>
                         <button type="submit" class="btn btn-primary" style="width: 100%; font-size: 1.15rem; padding: 18px; margin-top: 5px; box-shadow: 0 10px 20px rgba(95, 200, 32, 0.25); border-radius: 50px;">Get My Free Quote</button>
                     </form>
                     <p style="text-align: center; font-size: 0.85rem; color: #64748b; margin-top: 18px; display: flex; align-items: center; justify-content: center; gap: 6px;">
@@ -484,6 +485,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         </div>
     </footer>
 
+    <!-- Thank You Popup -->
+    <div id="thank-you-popup" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:99999; align-items:center; justify-content:center; backdrop-filter:blur(4px);">
+        <div style="background:#fff; border-radius:24px; padding:50px 40px; max-width:420px; width:90%; text-align:center; box-shadow:0 30px 60px rgba(0,0,0,0.3); position:relative; animation:popupIn 0.4s ease;">
+            <button onclick="document.getElementById('thank-you-popup').style.display='none'" style="position:absolute;top:15px;right:20px;background:none;border:none;font-size:1.8rem;cursor:pointer;color:#94a3b8;line-height:1;">&times;</button>
+            <div style="width:72px;height:72px;background:linear-gradient(135deg,#5fc820,#4aab15);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 22px;box-shadow:0 10px 20px rgba(95,200,32,0.3);">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+            </div>
+            <h3 style="font-size:1.75rem;color:#002b5c;margin-bottom:10px;font-family:'Outfit',sans-serif;font-weight:800;">Thank You!</h3>
+            <p style="color:#64748b;font-size:1.05rem;line-height:1.6;margin-bottom:28px;">Your request has been received.<br>Someone from our team will reach out to you in the next <strong style="color:#002b5c;">5 minutes</strong>!</p>
+            <button onclick="document.getElementById('thank-you-popup').style.display='none'" style="background:linear-gradient(135deg,#5fc820,#4aab15);color:#fff;border:none;padding:14px 44px;border-radius:50px;font-size:1rem;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:0 8px 20px rgba(95,200,32,0.3);">Got It!</button>
+        </div>
+    </div>
+    <style>@keyframes popupIn{from{opacity:0;transform:scale(0.85) translateY(20px)}to{opacity:1;transform:scale(1) translateY(0)}}</style>
+
     <!-- Mobile Sticky CTA Bar -->
     <div class="mobile-cta-bar">
         <a href="tel:9165550123" class="btn btn-primary btn-full">
@@ -504,19 +519,44 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+
+            // Scroll-triggered mobile sticky CTA
             const triggerEl = document.getElementById("mobile-scroll-trigger");
             const mobileCta = document.querySelector(".mobile-cta-bar");
-
             if (triggerEl && mobileCta) {
                 window.addEventListener("scroll", function() {
                     const rect = triggerEl.getBoundingClientRect();
-                    // Show sticky CTA only when the trigger text is scrolled past (above viewport + small offset for header)
                     if (rect.bottom < 80) {
                         mobileCta.classList.add("is-visible");
                     } else {
                         mobileCta.classList.remove("is-visible");
                     }
                 }, { passive: true });
+            }
+
+            // Netlify AJAX form submission + GTM event + thank you popup
+            document.querySelectorAll('form[data-netlify="true"]').forEach(function(form) {
+                form.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    fetch(window.location.pathname, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: new URLSearchParams(new FormData(form)).toString()
+                    }).finally(function() {
+                        window.dataLayer = window.dataLayer || [];
+                        window.dataLayer.push({ event: 'form_submit', form_name: form.getAttribute('name') });
+                        var popup = document.getElementById('thank-you-popup');
+                        if (popup) { popup.style.display = 'flex'; form.reset(); }
+                    });
+                });
+            });
+
+            // Close popup on background click
+            var popup = document.getElementById('thank-you-popup');
+            if (popup) {
+                popup.addEventListener('click', function(e) {
+                    if (e.target === popup) popup.style.display = 'none';
+                });
             }
         });
     </script>
